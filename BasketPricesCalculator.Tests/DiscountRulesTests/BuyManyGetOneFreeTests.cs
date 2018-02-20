@@ -21,17 +21,18 @@ namespace BasketPricesCalculator.Tests.DiscountRulesTests
             var item = new BasketItem
             {
                 Quantity = qty,
-                LastPrice = 0,
+                AfterDiscountPrice = 0,
+                DiscountRuleType = DiscountRuleType.BuyManyGetOneFree,
+                DiscountParameter = minimumToBuy,
                 Product = new Product
                 {
-                    DiscountRule = DiscountRuleType.BuyManyGetOneFree,
                     Price = price
                 }
             };
 
-            discount.ApplyDiscount(item, minimumToBuy);
+            discount.ApplyDiscount(item);
 
-            Assert.AreEqual(result, item.LastPrice);
+            Assert.AreEqual(result, item.AfterDiscountPrice);
         }
 
         [Test]
@@ -52,17 +53,19 @@ namespace BasketPricesCalculator.Tests.DiscountRulesTests
             var item = new BasketItem
             {
                 Quantity = qty,
-                LastPrice = 0,
+                AfterDiscountPrice = 0,
+                DiscountRuleType = DiscountRuleType.BuyManyGetOneFree,
+                DiscountParameter = minimumToBuy,
                 Product = new Product
                 {
-                    DiscountRule = DiscountRuleType.BuyManyGetOneFree,
+                    
                     Price = price
                 }
             };
 
-            discount.ApplyDiscount(item, minimumToBuy);
+            discount.ApplyDiscount(item);
 
-            Assert.AreEqual(result, item.LastPrice);
+            Assert.AreEqual(result, item.AfterDiscountPrice);
         }
 
         [Test]
@@ -83,17 +86,19 @@ namespace BasketPricesCalculator.Tests.DiscountRulesTests
             var item = new BasketItem
             {
                 Quantity = qty,
-                LastPrice = 0,
+                AfterDiscountPrice = 0,
+                DiscountRuleType = DiscountRuleType.BuyManyGetOneFree,
+                DiscountParameter = minimumToBuy,
                 Product = new Product
                 {
-                    DiscountRule = DiscountRuleType.BuyManyGetOneFree,
+                    
                     Price = price
                 }
             };
 
-            discount.ApplyDiscount(item, minimumToBuy);
+            discount.ApplyDiscount(item);
 
-            Assert.AreEqual(result, item.LastPrice);
+            Assert.AreEqual(result, item.AfterDiscountPrice);
         }
 
         [Test]
@@ -102,7 +107,7 @@ namespace BasketPricesCalculator.Tests.DiscountRulesTests
             var discount = new BuyManyGetOneFree();
             Assert.Throws<ArgumentNullException>(() =>
             {
-                discount.ApplyDiscount(null, 2);
+                discount.ApplyDiscount(null);
             });
         }
 
@@ -113,17 +118,17 @@ namespace BasketPricesCalculator.Tests.DiscountRulesTests
             var item = new BasketItem
             {
                 Quantity = 2,
-                LastPrice = 0,
+                AfterDiscountPrice = 0,
+                DiscountRuleType = DiscountRuleType.None,
                 Product = new Product
                 {
-                    DiscountRule = DiscountRuleType.None,
                     Price = (decimal)12.33
                 }
             };
 
             Assert.Throws<InvalidOperationException>(() =>
             {
-                discount.ApplyDiscount(item, 1);
+                discount.ApplyDiscount(item);
             });
         }
 
@@ -134,17 +139,17 @@ namespace BasketPricesCalculator.Tests.DiscountRulesTests
             var item = new BasketItem
             {
                 Quantity = 2,
-                LastPrice = 0,
+                AfterDiscountPrice = 0,
+                DiscountRuleType = DiscountRuleType.None,
                 Product = new Product
                 {
-                    DiscountRule = DiscountRuleType.None,
                     Price = (decimal)12.33
                 }
             };
 
             Assert.Throws<InvalidOperationException>(() =>
             {
-                discount.ApplyDiscount(item, 2);
+                discount.ApplyDiscount(item);
             });
         }
     }

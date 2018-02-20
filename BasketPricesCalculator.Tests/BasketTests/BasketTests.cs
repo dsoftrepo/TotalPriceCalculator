@@ -28,12 +28,12 @@ namespace BasketPricesCalculator.Tests.BasketTests
             var item = new BasketItem
             {
                 Quantity = 2,
-                LastPrice = 0,
+                AfterDiscountPrice = 0,
+                DiscountRuleType = DiscountRuleType.BuyManyGetOneFree,
+                DiscountParameter = 2,
                 Product = new Product
                 {
-                    DiscountRule = DiscountRuleType.BuyManyGetOneFree,
-                    Price = (decimal)10.50,
-                    DiscountParameter = 2
+                    Price = (decimal)10.50
                 }
             };
 
@@ -149,13 +149,13 @@ namespace BasketPricesCalculator.Tests.BasketTests
             {
                 Id = id,
                 Quantity = qty,
-                LastPrice = 0,
+                AfterDiscountPrice = 0,
+                DiscountRuleType = type,
+                DiscountParameter = param,
                 Product = new Product
                 {
                     Id = id,
-                    DiscountRule = type,
                     Price = (decimal)10.50,
-                    DiscountParameter = param
                 }
             };
         }

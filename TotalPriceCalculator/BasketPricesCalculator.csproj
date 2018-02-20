@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Basket\Basket.cs" />
     <Compile Include="Basket\BasketItem.cs" />
+    <Compile Include="Basket\IDiscountable.cs" />
     <Compile Include="Basket\Product.cs" />
     <Compile Include="Calculator\IBasketPriceCalculator.cs" />
     <Compile Include="Calculator\TotalPriceCalculator.cs" />

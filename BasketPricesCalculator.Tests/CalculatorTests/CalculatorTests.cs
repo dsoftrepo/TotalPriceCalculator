@@ -18,12 +18,12 @@ namespace BasketPricesCalculator.Tests.CalculatorTests
             var item = new BasketItem
             {
                 Quantity = 2,
-                LastPrice = (decimal)10.50,
+                AfterDiscountPrice = (decimal)10.50,
+                DiscountRuleType = DiscountRuleType.BuyManyGetOneFree,
+                DiscountParameter = 2,
                 Product = new Product
                 {
-                    DiscountRule = DiscountRuleType.BuyManyGetOneFree,
-                    Price = (decimal)10.50,
-                    DiscountParameter = 2
+                    Price = (decimal)10.50
                 }
             };
 
@@ -34,7 +34,7 @@ namespace BasketPricesCalculator.Tests.CalculatorTests
         }
 
         [Test]
-        public void GivenBasketItem_Buy1Get1Free_WhenUpdateItemLastPrice_ThenItemIsUpdatedCorrectly()
+        public void GivenBasketItem_Buy1Get1Free_WhenApplyDiscount_ThenItemIsUpdatedCorrectly()
         {
             var discountFactory = new DiscountRuleFactory();
             var calculator = new BasketPriceCalculator(discountFactory);
@@ -42,22 +42,22 @@ namespace BasketPricesCalculator.Tests.CalculatorTests
             var item = new BasketItem
             {
                 Quantity = 2,
-                LastPrice = 0,
+                AfterDiscountPrice = (decimal)10.50,
+                DiscountRuleType = DiscountRuleType.BuyManyGetOneFree,
+                DiscountParameter = 2,
                 Product = new Product
                 {
-                    DiscountRule = DiscountRuleType.BuyManyGetOneFree,
-                    Price = (decimal)10.50,
-                    DiscountParameter = 2
+                    Price = (decimal)10.50
                 }
             };
 
-            calculator.UpdateItemLastPrice(item);
+            calculator.ApplyDiscount(item);
 
-            Assert.AreEqual(10.50, item.LastPrice);
+            Assert.AreEqual(10.50, item.AfterDiscountPrice);
         }
 
         [Test]
-        public void GivenBasketItem_Buy2Get1Free_WhenUpdateItemLastPrice_ThenItemIsUpdatedCorrectly()
+        public void GivenBasketItem_Buy2Get1Free_WhenApplyDiscount_ThenItemIsUpdatedCorrectly()
         {
             var discountFactory = new DiscountRuleFactory();
             var calculator = new BasketPriceCalculator(discountFactory);
@@ -65,22 +65,22 @@ namespace BasketPricesCalculator.Tests.CalculatorTests
             var item = new BasketItem
             {
                 Quantity = 3,
-                LastPrice = 0,
+                AfterDiscountPrice = (decimal)10.50,
+                DiscountRuleType = DiscountRuleType.BuyManyGetOneFree,
+                DiscountParameter = 3,
                 Product = new Product
                 {
-                    DiscountRule = DiscountRuleType.BuyManyGetOneFree,
-                    Price = (decimal)10.50,
-                    DiscountParameter = 3
+                    Price = (decimal)10.50
                 }
             };
 
-            calculator.UpdateItemLastPrice(item);
+            calculator.ApplyDiscount(item);
 
-            Assert.AreEqual(21, item.LastPrice);
+            Assert.AreEqual(21, item.AfterDiscountPrice);
         }
 
         [Test]
-        public void GivenBasketItem_Percentage_WhenUpdateItemLastPrice_ThenItemIsUpdatedCorrectly()
+        public void GivenBasketItem_Percentage_WhenApplyDiscount_ThenItemIsUpdatedCorrectly()
         {
             var discountFactory = new DiscountRuleFactory();
             var calculator = new BasketPriceCalculator(discountFactory);
@@ -88,22 +88,22 @@ namespace BasketPricesCalculator.Tests.CalculatorTests
             var item = new BasketItem
             {
                 Quantity = 2,
-                LastPrice = 0,
+                AfterDiscountPrice = 0,
+                DiscountParameter = 10,
+                DiscountRuleType = DiscountRuleType.Percentage,
                 Product = new Product
                 {
-                    DiscountRule = DiscountRuleType.Percentage,
-                    Price = (decimal) 20.10,
-                    DiscountParameter = 10
+                    Price = (decimal) 20.10
                 }
             };
 
-            calculator.UpdateItemLastPrice(item);
+            calculator.ApplyDiscount(item);
 
-            Assert.AreEqual(36.18, item.LastPrice);
+            Assert.AreEqual(36.18, item.AfterDiscountPrice);
         }
 
         [Test]
-        public void GivenBasketItem_NoRule_Percentage_WhenUpdateItemLastPrice_ThenItemIsUpdatedCorrectly()
+        public void GivenBasketItem_NoRule_Percentage_WhenApplyDiscount_ThenItemIsUpdatedCorrectly()
         {
             var discountFactory = new DiscountRuleFactory();
             var calculator = new BasketPriceCalculator(discountFactory);
@@ -111,41 +111,41 @@ namespace BasketPricesCalculator.Tests.CalculatorTests
             var item = new BasketItem
             {
                 Quantity = 2,
-                LastPrice = 0,
+                AfterDiscountPrice = 0,
+                DiscountParameter = 10,
+                DiscountRuleType = DiscountRuleType.None,
                 Product = new Product
                 {
-                    DiscountRule = DiscountRuleType.None,
+                    Price = (decimal)20.10
+                }
+            };
+
+            calculator.ApplyDiscount(item);
+
+            Assert.AreEqual(40.20, item.AfterDiscountPrice);
+        }
+
+        [Test]
+        public void GivenBasketItem_NullRule_Percentage_WhenApplyDiscount_ThenItemIsUpdatedCorrectly()
+        {
+            var discountFactory = new DiscountRuleFactory();
+            var calculator = new BasketPriceCalculator(discountFactory);
+
+            var item = new BasketItem
+            {
+                Quantity = 2,
+                AfterDiscountPrice = 0,
+                DiscountRuleType = null,
+                DiscountParameter = 0,
+                Product = new Product
+                {
                     Price = (decimal)20.10,
-                    DiscountParameter = 10
                 }
             };
 
-            calculator.UpdateItemLastPrice(item);
+            calculator.ApplyDiscount(item);
 
-            Assert.AreEqual(40.20, item.LastPrice);
-        }
-
-        [Test]
-        public void GivenBasketItem_NullRule_Percentage_WhenUpdateItemLastPrice_ThenItemIsUpdatedCorrectly()
-        {
-            var discountFactory = new DiscountRuleFactory();
-            var calculator = new BasketPriceCalculator(discountFactory);
-
-            var item = new BasketItem
-            {
-                Quantity = 2,
-                LastPrice = 0,
-                Product = new Product
-                {
-                    DiscountRule = null,
-                    Price = (decimal)20.10,
-                    DiscountParameter = 0
-                }
-            };
-
-            calculator.UpdateItemLastPrice(item);
-
-            Assert.AreEqual(40.20, item.LastPrice);
+            Assert.AreEqual(40.20, item.AfterDiscountPrice);
         }
     }
 }

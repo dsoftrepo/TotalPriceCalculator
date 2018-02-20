@@ -5,12 +5,12 @@ namespace TotalPriceCalculator.DiscountRules
 {
     public class DefaultRule : IDiscountRule
     {
-        public void ApplyDiscount(BasketItem item, int parameter)
+        public void ApplyDiscount(IDiscountable item)
         {
             if (item == null) throw new ArgumentNullException("item");
-            if (item.Product.DiscountRule != DiscountRuleType.None) throw new InvalidOperationException("Invalid Discount rule applied");
+            if (item.DiscountRuleType != DiscountRuleType.None) throw new InvalidOperationException("Invalid Discount rule applied");
 
-            item.LastPrice = item.Quantity * item.Product.Price;
+            item.AfterDiscountPrice = item.Quantity * item.UnitPrice;
         }
     }
 }

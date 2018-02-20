@@ -21,17 +21,18 @@ namespace BasketPricesCalculator.Tests.DiscountRulesTests
             var item = new BasketItem
             {
                 Quantity = qty,
-                LastPrice = 0,
+                AfterDiscountPrice = 0,
+                DiscountRuleType = DiscountRuleType.Percentage,
+                DiscountParameter = percent,
                 Product = new Product
                 {
-                    DiscountRule = DiscountRuleType.Percentage,
                     Price = price
                 }
             };
 
-            discount.ApplyDiscount(item, percent);
+            discount.ApplyDiscount(item);
 
-            Assert.AreEqual(result, item.LastPrice);
+            Assert.AreEqual(result, item.AfterDiscountPrice);
         }
 
         [Test]
@@ -40,7 +41,7 @@ namespace BasketPricesCalculator.Tests.DiscountRulesTests
             var discount = new PercentageRule();
             Assert.Throws<ArgumentNullException>(() =>
             {
-                discount.ApplyDiscount(null, 0);
+                discount.ApplyDiscount(null);
             });
         }
 
@@ -51,16 +52,16 @@ namespace BasketPricesCalculator.Tests.DiscountRulesTests
             var item = new BasketItem
             {
                 Quantity = 2,
-                LastPrice = 0,
+                AfterDiscountPrice = 0,
+                DiscountRuleType = DiscountRuleType.None,
                 Product = new Product
                 {
-                    DiscountRule = DiscountRuleType.None,
                     Price = (decimal)12.33
                 }
             };
             Assert.Throws<InvalidOperationException>(() =>
             {
-                discount.ApplyDiscount(item, 0);
+                discount.ApplyDiscount(item);
             });
         }
     }

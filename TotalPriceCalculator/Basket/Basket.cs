@@ -34,7 +34,7 @@ namespace TotalPriceCalculator.Basket
                 return;
             }
 
-            _calculator.UpdateItemLastPrice(item);
+            _calculator.ApplyDiscount(item);
             _items.Add(item);
             RecalculateTotal();
         }
@@ -54,7 +54,7 @@ namespace TotalPriceCalculator.Basket
             if (basketItem == null) return;
 
             basketItem.Quantity = qty;
-            _calculator.UpdateItemLastPrice(basketItem);
+            _calculator.ApplyDiscount(basketItem);
             RecalculateTotal();
         }
 

@@ -5,7 +5,7 @@ namespace TotalPriceCalculator.Calculator
 {
     public interface IBasketPriceCalculator
     {
-        decimal CalculateTotal(IEnumerable<BasketItem> items);
-        void UpdateItemLastPrice(BasketItem item);
+        decimal CalculateTotal(IEnumerable<IDiscountable> items);
+        void ApplyDiscount(IDiscountable item);
     }
 }

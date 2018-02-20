@@ -5,24 +5,24 @@ namespace TotalPriceCalculator.DiscountRules
 {
     public class BuyManyGetOneFree : IDiscountRule
     {
-        public void ApplyDiscount(BasketItem item, int parameter)
+        public void ApplyDiscount(IDiscountable item)
         {
             if (item == null) throw new ArgumentNullException("item");
-            if (parameter < 2) throw new InvalidOperationException("Invalid parameter");
-            if (item.Product.DiscountRule != DiscountRuleType.BuyManyGetOneFree) throw new InvalidOperationException("Invalid Discount rule applied");
+            if (item.DiscountParameter < 2) throw new InvalidOperationException("Invalid parameter");
+            if (item.DiscountRuleType != DiscountRuleType.BuyManyGetOneFree) throw new InvalidOperationException("Invalid Discount rule applied");
 
             if (item.Quantity == 1)
             {
-                item.LastPrice = item.Product.Price;
+                item.AfterDiscountPrice = item.UnitPrice;
                 return;
             }
 
-            var anySingles =  item.Quantity % parameter;
-            item.LastPrice = anySingles == 0
-                ? item.Product.Price * item.Quantity * (parameter - 1) / parameter
-                : item.Product.Price * ((item.Quantity - anySingles) * (parameter - 1) / parameter + anySingles);
+            var anySingles =  item.Quantity % item.DiscountParameter;
+            item.AfterDiscountPrice = anySingles == 0
+                ? item.UnitPrice * item.Quantity * (item.DiscountParameter - 1) / item.DiscountParameter
+                : item.UnitPrice * ((item.Quantity - anySingles) * (item.DiscountParameter - 1) / item.DiscountParameter + anySingles);
 
-            item.LastPrice = Math.Round(item.LastPrice, 2);
+            item.AfterDiscountPrice = Math.Round(item.AfterDiscountPrice, 2);
         }
     }
 }

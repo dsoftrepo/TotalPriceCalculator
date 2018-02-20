@@ -4,6 +4,6 @@ namespace TotalPriceCalculator.DiscountRules
 {
     public interface IDiscountRule
     {
-        void ApplyDiscount(BasketItem item, int parameter);
+        void ApplyDiscount(IDiscountable item);
     }
 }

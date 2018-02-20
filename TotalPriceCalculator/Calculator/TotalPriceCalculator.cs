@@ -14,21 +14,21 @@ namespace TotalPriceCalculator.Calculator
             _discountRuleFactory = discountRuleFactory;
         }
 
-        public decimal CalculateTotal(IEnumerable<BasketItem> items)
+        public decimal CalculateTotal(IEnumerable<IDiscountable> items)
         {
-            return items.Sum(x => x.LastPrice);
+            return items.Sum(x => x.AfterDiscountPrice);
         }
 
-        public void UpdateItemLastPrice(BasketItem item)
+        public void ApplyDiscount(IDiscountable item)
         {
-            if (!item.Product.DiscountRule.HasValue)
+            if (!item.DiscountRuleType.HasValue)
             {
-                item.LastPrice = item.Quantity * item.Product.Price;
+                item.AfterDiscountPrice = item.UnitPrice * item.Quantity;
                 return;
             }
 
-            var discountRule = _discountRuleFactory.ResolveDiscountRule(item.Product.DiscountRule.Value);
-            discountRule.ApplyDiscount(item, item.Product.DiscountParameter);
+            var discountRule = _discountRuleFactory.ResolveDiscountRule(item.DiscountRuleType.Value);
+            discountRule.ApplyDiscount(item);
         }
     }
 }
